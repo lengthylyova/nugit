@@ -4,7 +4,7 @@
 
 ## About
 Simple, lightweight and quick to install pre-commit solution.
-Requires python and payload installed in the environment
+Requires python and PyYAML installed in the environment
 
 ## Usage
 ### prepare `pre-commit` script
