@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+# TODO: config file validation (PreCommitJobsExecutor method to call in __enter__)
+# TODO: total-time setting (total time at the end of pre-commit)
+# TODO: quiet-mode setting (no output)
+# TODO: run commands via subprocess, not system(cmd)
+# TODO: automatic check for updates
+
+import sys
+from dataclasses import dataclass
+from os import system
+from time import sleep
+from typing import Any, Dict
+
+import yaml
+
+
+# DataClasses
+# ----------------------------------------------------------------------
+@dataclass(init=False, frozen=True)
+class Constant:
+    CFG_FILEPATH: str = "pre-py.yaml"
+
+
+@dataclass(init=False, frozen=True)
+class Color:
+    BLUE: str = '\033[1;34m'
+    RED: str = '\033[0;31m'
+    PURPLE: str = '\033[0;35m'
+    NO_COLOR: str = '\033[0m'
+
+
+# Exceptions
+# ----------------------------------------------------------------------
+class PreCommitJobError(Exception):
+    pass
+
+
+class PreCommitError(Exception):
+    pass
+
+
+# Functions
+# ----------------------------------------------------------------------
+def parse_yaml(filepath: str) -> Dict[str, Any]:
+    with open(filepath, "r") as file:
+        data = yaml.safe_load(file)
+    return data
+
+
+def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
+    required = job_attrs.get("required", False)
+    to_run = job_attrs.get("run", [])
+    if not isinstance(required, bool):
+        raise PreCommitError(f"`required` for {job_name} is not bool.")
+    if not to_run:
+        raise PreCommitError(f"`run` for {job_name} not defined.")
+
+    sys.stderr.write(f"[{Color.BLUE}{job_name}{Color.NO_COLOR}]"
+                     f"{Color.RED if required else Color.BLUE}*{Color.NO_COLOR}\n")
+
+    for cmd in to_run:
+        if not cmd:
+            raise PreCommitJobError(f"empty command on {job_name}.")
+        status = system(cmd)
+        if required and status != 0:
+            raise PreCommitJobError(f"{job_name} failed.")
+
+
+# Executor
+# ----------------------------------------------------------------------
+class PreCommitJobsExecutor:
+    def __init__(self, config_filepath: str) -> None:
+        self.jobs = None
+        self.settings = None
+        self.filepath = config_filepath
+
+    def parse_config(self):
+        data = parse_yaml(self.filepath)
+        self.settings = data.get("settings", {})
+        self.jobs = data.get("jobs", {})
+
+    def run_jobs(self) -> None:
+        sys.stderr.write(f"{Color.PURPLE}{'pre-py |':-<70}{Color.NO_COLOR}\n")
+        timeout = self.settings.get("timeout", 0)
+        if not isinstance(timeout, (int, float)):
+            raise PreCommitError("wrong settings.timeout type.")
+
+        for job_name, job_attrs in self.jobs.items():
+            run_job(job_name, job_attrs)
+            sleep(timeout)
+        sys.stderr.write(f"{Color.PURPLE}{'| done':->70}{Color.NO_COLOR}\n")
+
+    def __enter__(self):
+        self.parse_config()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type in (PreCommitJobError, PreCommitError):
+            sys.exit(f"{Color.RED}{exc_type.__name__}: {exc_value}{Color.NO_COLOR}\n")
+            return True
+
+
+# Run
+# ----------------------------------------------------------------------
+if __name__ == "__main__":
+    with PreCommitJobsExecutor(Constant.CFG_FILEPATH) as pc:
+        pc.run_jobs()
