@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
 
-from .constants import PrePyAbout
+from .constants import NugitAbout
 
 parser = ArgumentParser(
-    prog=f"{PrePyAbout.NAME}",
-    description=PrePyAbout.DESCRIPTION,
+    prog=f"{NugitAbout.NAME}",
+    description=NugitAbout.DESCRIPTION,
     add_help=True
 )
 

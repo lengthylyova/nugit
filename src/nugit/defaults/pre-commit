@@ -18,7 +18,7 @@ import yaml
 # ----------------------------------------------------------------------
 @dataclass(init=False, frozen=True)
 class Constant:
-    CFG_FILEPATH: str = "prepy.yaml"
+    CFG_FILEPATH: str = "nugit.yaml"
 
 
 @dataclass(init=False, frozen=True)
@@ -80,7 +80,7 @@ class PreCommitJobsExecutor:
         self.jobs = data.get("jobs", {})
 
     def run_jobs(self) -> None:
-        sys.stderr.write(f"{Color.PURPLE}{'prepy |':-<70}{Color.NO_COLOR}\n")
+        sys.stderr.write(f"{Color.PURPLE}{'nugit |':-<70}{Color.NO_COLOR}\n")
         timeout = self.settings.get("timeout", 0)
         if not isinstance(timeout, (int, float)):
             raise PreCommitError("wrong settings.timeout type.")
