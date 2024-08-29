@@ -22,6 +22,9 @@ Issues = "https://github.com/lengthylyova/nugit/issues"
 [project.scripts]
 nugit = "nugit.entrypoints:nugit"
 
+[project.optional-dependencies]
+dev = ["nugit>=1.0.2", "flake8>=7.1.1"]
+
 [tool.setuptools]
 include-package-data = true
 
