@@ -18,6 +18,12 @@ nugit mount
 * creates an example `nugit.yaml` configuration file if not exists
 * replaces the `pre-commit` file in your `.git/hooks/`
 
+### Run (check)
+```console
+nugit run
+```
+* runs `.git/hooks/pre-commit` script if exists
+
 ### Remove
 ```console
 nugit remove
