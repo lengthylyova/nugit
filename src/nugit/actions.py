@@ -1,6 +1,7 @@
 import os.path
 import shutil
 import stat
+import subprocess
 
 from .constants import NugitPaths
 
@@ -13,6 +14,12 @@ def mount():
 
     st = os.stat(NugitPaths.PRECOMMIT_DEST)
     os.chmod(NugitPaths.PRECOMMIT_DEST, st.st_mode | stat.S_IEXEC)
+
+
+def run():
+    if os.path.exists(NugitPaths.PRECOMMIT_DEST):
+        p = subprocess.Popen([NugitPaths.PRECOMMIT_DEST])
+        p.communicate()
 
 
 def remove():
