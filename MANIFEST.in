@@ -1,1 +1,1 @@
-include include src/defaults/*
+include include src/prepy/defaults/*

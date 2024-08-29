@@ -2,7 +2,7 @@ import os.path
 import shutil
 import stat
 
-from src.constants import PrePyPaths
+from .constants import PrePyPaths
 
 
 def mount():

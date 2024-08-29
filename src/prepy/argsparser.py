@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from src.constants import PrePyAbout
+from .constants import PrePyAbout
 
 parser = ArgumentParser(
     prog=f"{PrePyAbout.NAME}",
@@ -10,6 +10,6 @@ parser = ArgumentParser(
 
 parser.add_argument(
     "action",
-    choices=("mount", "validate"),
+    choices=("mount", "validate", "check"),
     help="specific action to perform",
 )
