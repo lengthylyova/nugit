@@ -22,4 +22,4 @@ jobs:
           python-version: '3.12'
       - run: |
           pip install .[dev]
-          flake8 --filename=* src/* --extend-exclude=*.yaml,*.md --statistics --color=always --ignore F401 --max-line-length=100
+          flake8 --filename=* src/* --extend-exclude=*.yaml,*.md,*.egg-info --statistics --color=always --ignore F401 --max-line-length=100
