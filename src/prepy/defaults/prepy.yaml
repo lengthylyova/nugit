@@ -1,0 +1,8 @@
+settings:
+  timeout: 0.5 # timeout between jobs (seconds)
+
+jobs:
+  greeting: # job_name
+    required: True # is successful completion required?
+    run: # commands list
+      - echo "Hi from pre-py!" # actual command

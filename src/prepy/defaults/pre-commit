@@ -18,7 +18,7 @@ import yaml
 # ----------------------------------------------------------------------
 @dataclass(init=False, frozen=True)
 class Constant:
-    CFG_FILEPATH: str = "pre-py.yaml"
+    CFG_FILEPATH: str = "prepy.yaml"
 
 
 @dataclass(init=False, frozen=True)
@@ -80,7 +80,7 @@ class PreCommitJobsExecutor:
         self.jobs = data.get("jobs", {})
 
     def run_jobs(self) -> None:
-        sys.stderr.write(f"{Color.PURPLE}{'pre-py |':-<70}{Color.NO_COLOR}\n")
+        sys.stderr.write(f"{Color.PURPLE}{'prepy |':-<70}{Color.NO_COLOR}\n")
         timeout = self.settings.get("timeout", 0)
         if not isinstance(timeout, (int, float)):
             raise PreCommitError("wrong settings.timeout type.")
@@ -97,7 +97,6 @@ class PreCommitJobsExecutor:
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type in (PreCommitJobError, PreCommitError):
             sys.exit(f"{Color.RED}{exc_type.__name__}: {exc_value}{Color.NO_COLOR}\n")
-            return True
 
 
 # Run
