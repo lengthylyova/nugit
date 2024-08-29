@@ -1,0 +1,9 @@
+settings:
+  timeout: 0.5
+
+jobs:
+  flake8-lint:
+    required: True
+    run:
+      - flake8 --version
+      - flake8 --statistics --color=always --ignore F401 --exclude=.env,build --max-line-length=100
