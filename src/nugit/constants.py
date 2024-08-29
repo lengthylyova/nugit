@@ -6,7 +6,7 @@ from dataclasses import dataclass
 class NugitAbout:
     NAME: str = "nugit"
     DESCRIPTION: str = "Easy to understand, configure and install git pre-commit solution"
-    VERSION: str = "1.0.3"
+    VERSION: str = "1.0.4"
     AUTHOR: str = "Lev Zlobin (lengthylyova)"
     AUTHOR_EMAIL: str = "lengthylyova@gmail.com"
 
