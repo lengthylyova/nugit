@@ -3,20 +3,20 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "prepy"
+name = "nugit"
 authors = [{ name = "Lev Zlobin", email = "lengthylyova@gmail.com" }]
 dependencies = ["PyYAML >= 6.0.2"]
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/lengthylyova/prepy"
+Homepage = "https://github.com/lengthylyova/nugit"
 Issues = "https://github.com/lengthylyova/issues"
 
 [project.scripts]
-prepy = "prepy.entrypoints:prepy"
+nugit = "nugit.entrypoints:nugit"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.dynamic]
-version = { attr = "prepy.__version__" }
+version = { attr = "nugit.__version__" }

@@ -2,7 +2,7 @@ from ..actions import mount, remove
 from ..argsparser import parser
 
 
-def prepy():
+def nugit():
     args = parser.parse_args()
     match args.action:
         case "mount":

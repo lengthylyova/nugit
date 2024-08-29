@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 
 @dataclass(init=False, frozen=True)
-class PrePyAbout:
-    NAME: str = "prepy"
+class NugitAbout:
+    NAME: str = "nugit"
     DESCRIPTION: str = "Easy to understand, configure and install git pre-commit solution"
     VERSION: str = "1.0.1"
     AUTHOR: str = "Lev Zlobin (lengthylyova)"
@@ -12,9 +12,9 @@ class PrePyAbout:
 
 
 @dataclass(init=False, frozen=True)
-class PrePyPaths:
-    DEFAULT_CFG_FILEPATH: str = os.path.join(os.path.dirname(__file__), "defaults/prepy.yaml")
+class NugitPaths:
+    DEFAULT_CFG_FILEPATH: str = os.path.join(os.path.dirname(__file__), "defaults/nugit.yaml")
     DEFAULT_PRECOMMIT_FILEPATH: str = os.path.join(os.path.dirname(__file__), "defaults/pre-commit")
 
-    CFG_DEST: str = os.path.join(os.path.curdir, "prepy.yaml")
+    CFG_DEST: str = os.path.join(os.path.curdir, "nugit.yaml")
     PRECOMMIT_DEST: str = os.path.join(os.path.curdir, ".git/hooks/pre-commit")
