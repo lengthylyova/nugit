@@ -1,0 +1,25 @@
+name: Flake8
+
+on:
+  pull_request:
+    branches: [ 'main' ]
+    paths:
+      - 'src/**'
+
+  push:
+    branches: [ 'main' ]
+    paths:
+      - 'src/**'
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install .[dev]
+          flake8 --statistics --color=always --ignore F401 --exclude=.env --max-line-length=100
