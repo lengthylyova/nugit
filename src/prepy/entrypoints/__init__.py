@@ -1,4 +1,4 @@
-from ..actions import mount
+from ..actions import mount, remove
 from ..argsparser import parser
 
 
@@ -12,4 +12,4 @@ def prepy():
         case "check":
             raise NotImplementedError
         case "remove":
-            raise NotImplementedError
+            remove()

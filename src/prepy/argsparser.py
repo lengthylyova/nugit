@@ -10,6 +10,6 @@ parser = ArgumentParser(
 
 parser.add_argument(
     "action",
-    choices=("mount", "validate", "check"),
+    choices=("mount", "validate", "check", "remove"),
     help="specific action to perform",
 )

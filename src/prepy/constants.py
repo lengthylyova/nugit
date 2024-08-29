@@ -6,7 +6,7 @@ from dataclasses import dataclass
 class PrePyAbout:
     NAME: str = "prepy"
     DESCRIPTION: str = "Easy to understand, configure and install git pre-commit solution"
-    VERSION: str = "1.0.0"
+    VERSION: str = "1.0.1"
     AUTHOR: str = "Lev Zlobin (lengthylyova)"
     AUTHOR_EMAIL: str = "lengthylyova@gmail.com"
 
@@ -18,4 +18,3 @@ class PrePyPaths:
 
     CFG_DEST: str = os.path.join(os.path.curdir, "prepy.yaml")
     PRECOMMIT_DEST: str = os.path.join(os.path.curdir, ".git/hooks/pre-commit")
-    PRECOMMIT_OLD_DEST: str = os.path.join(os.path.curdir, ".git/hooks/pre-commit.old")
