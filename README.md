@@ -6,20 +6,20 @@ Easy to setup, simple to use and tasty as nugget pre-commit solution.
 <img src="assets/images/k9x8fAf.png">
 
 ## Installation
-```shell
+```console
 pip install nugit
 ```
 
 ## Usage
 ### Mount
-```shell
+```console
 nugit mount
 ```
 * creates an example `nugit.yaml` configuration file if not exists
 * replaces the `pre-commit` file in your `.git/hooks/`
 
 ### Remove
-```shell
+```console
 nugit remove
 ```
 * removes a `nugit.yaml` configuration file
