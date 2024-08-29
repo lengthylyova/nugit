@@ -1,1 +1,1 @@
-### Visit [our GitHub page]("https://github.com/lengthylyova/nugit") for more info and usage guide.
+### Visit [our GitHub page](https://github.com/lengthylyova/nugit) for more info and usage guide.
