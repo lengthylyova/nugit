@@ -1,9 +1,9 @@
-<img src="assets/images/nugit_top.png">
+<img src="assets/images/lesa7xg.png">
 
-## About
+## About `nugit`
 Easy to setup, simple to use and tasty as nugget pre-commit solution.
 
-<img src="assets/images/nugit_terminal.png">
+<img src="assets/images/k9x8fAf.png">
 
 ## Installation
 ```shell
