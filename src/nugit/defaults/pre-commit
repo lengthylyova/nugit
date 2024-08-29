@@ -47,6 +47,7 @@ def parse_yaml(filepath: str) -> Dict[str, Any]:
 
 
 def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
+    quite = job_attrs.get("quite", False)
     required = job_attrs.get("required", False)
     to_run = job_attrs.get("run", [])
     if not isinstance(required, bool):
@@ -60,7 +61,8 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     for cmd in to_run:
         if not cmd:
             raise PreCommitJobError(f"empty command on {job_name}.")
-        p = subprocess.Popen(cmd, shell=True)
+        p = subprocess.Popen(
+            cmd, shell=True, stdout=subprocess.DEVNULL if quite else None)
         p.communicate()
         if required and p.returncode != 0:
             raise PreCommitJobError(f"{job_name} failed.")
