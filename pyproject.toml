@@ -10,7 +10,7 @@ dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/lengthylyova/nugit"
-Issues = "https://github.com/lengthylyova/issues"
+Issues = "https://github.com/lengthylyova/nugit/issues"
 
 [project.scripts]
 nugit = "nugit.entrypoints:nugit"
