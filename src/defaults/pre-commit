@@ -97,7 +97,6 @@ class PreCommitJobsExecutor:
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type in (PreCommitJobError, PreCommitError):
             sys.exit(f"{Color.RED}{exc_type.__name__}: {exc_value}{Color.NO_COLOR}\n")
-            return True
 
 
 # Run
