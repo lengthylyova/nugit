@@ -4,10 +4,9 @@
 # TODO: quiet-mode setting (no output)
 # TODO: run commands via subprocess, not system(cmd)
 # TODO: automatic check for updates
-
+import subprocess
 import sys
 from dataclasses import dataclass
-from os import system
 from time import sleep
 from typing import Any, Dict
 
@@ -61,8 +60,9 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     for cmd in to_run:
         if not cmd:
             raise PreCommitJobError(f"empty command on {job_name}.")
-        status = system(cmd)
-        if required and status != 0:
+        p = subprocess.Popen(cmd, shell=True)
+        p.communicate()
+        if required and p.returncode != 0:
             raise PreCommitJobError(f"{job_name} failed.")
 
 
