@@ -4,6 +4,7 @@ settings:
 jobs:
   flake8-lint-src:
     required: True
+    quite: True
     run:
       - flake8 --version
       - flake8 --filename=* src/* --extend-exclude=*.yaml,*.md,*.egg-info --statistics --color=always --ignore F401 --max-line-length=100
