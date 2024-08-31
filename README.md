@@ -1,5 +1,12 @@
 <img src="assets/images/lesa7xg.png">
 
+[![Flake8](https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml/badge.svg)](https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml)
+![PyPI - Version](https://img.shields.io/pypi/v/nugit)
+![GitHub License](https://img.shields.io/github/license/lengthylyova/nugit)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/nugit)
+
+
+
 ## About `nugit`
 Easy to setup, simple to use and tasty as nugget pre-commit solution.
 
