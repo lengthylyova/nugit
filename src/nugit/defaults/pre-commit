@@ -51,6 +51,24 @@ def parse_yaml(filepath: str) -> Dict[str, Any]:
     return data
 
 
+def execute_cmd(cmd: str, quite: bool):
+    p = subprocess.Popen(
+        cmd, shell=True,
+        stdout=subprocess.PIPE, universal_newlines=True
+    )
+    if not quite:
+        for line in iter(p.stdout.readline, ""):
+            yield line
+        p.stdout.close()
+    return_code = p.wait()
+    if return_code:
+        if quite:
+            for line in iter(p.stdout.readline, ""):
+                yield line
+            p.stdout.close()
+        raise PreCommitJobError(f"Failed: {cmd}")
+
+
 def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     quite = job_attrs.get("quite", False)
     required = job_attrs.get("required", False)
@@ -68,23 +86,14 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     for cmd in to_run:
         if not cmd:
             raise PreCommitJobError(f"empty command on {job_name}.")
-        p = subprocess.Popen(
-            cmd, shell=True,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        out, err = p.communicate()
-
-        if not quite or p.returncode != 0:
-            if out:
-                for line in out.splitlines():
-                    sys.stdout.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line.decode()}\n")
-                sys.stderr.write("\n")
-            if err:
-                for line in err.splitlines():
-                    sys.stderr.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line.decode()}\n")
-                sys.stderr.write("\n")
-            if required and p.returncode != 0:
-                raise PreCommitJobError(f"{job_name} failed.")
+        try:
+            for line in execute_cmd(cmd, quite):
+                sys.stdout.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line}")
+        except PreCommitError as e:
+            if not required:
+                sys.stdout.write(f"{Color.RED}{e.__repr__()}{Color.NO_COLOR}")
+            else:
+                raise e
 
 
 # Executor
