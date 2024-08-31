@@ -3,13 +3,9 @@ name: Flake8
 on:
   pull_request:
     branches: [ 'main' ]
-    paths:
-      - 'src/**'
 
   push:
     branches: [ 'main' ]
-    paths:
-      - 'src/**'
 
 jobs:
   flake8-lint:
