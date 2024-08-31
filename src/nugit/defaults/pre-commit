@@ -16,16 +16,21 @@ import yaml
 # DataClasses
 # ----------------------------------------------------------------------
 @dataclass(init=False, frozen=True)
-class Constant:
-    CFG_FILEPATH: str = "nugit.yaml"
+class Color:
+    BLUE: str = '\033[1;34m'
+    GREEN: str = '\033[1;32m'
+    RED: str = '\033[1;31m'
+    CYAN: str = '\033[1;36m'
+    PURPLE: str = '\033[1;35m'
+    NO_COLOR: str = '\033[0m'
 
 
 @dataclass(init=False, frozen=True)
-class Color:
-    BLUE: str = '\033[1;34m'
-    RED: str = '\033[0;31m'
-    PURPLE: str = '\033[0;35m'
-    NO_COLOR: str = '\033[0m'
+class Constant:
+    CFG_FILEPATH: str = "nugit.yaml"
+    OUTPUT_HEADER: str = (f"\n{Color.PURPLE}{'- nuGit -'.center(28)}\n"
+                          f"- Pre-commit Solution Tool -\n\n")
+    OUTPUT_FOOTER: str = f"\n{Color.GREEN}{'- nuGit jobs done -'.center(28)}{Color.NO_COLOR}\n\n"
 
 
 # Exceptions
@@ -55,20 +60,29 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     if not to_run:
         raise PreCommitError(f"`run` for {job_name} not defined.")
 
-    sys.stderr.write(f"[{Color.BLUE}{job_name}{Color.NO_COLOR}]"
-                     f"{Color.RED if required else Color.BLUE}*{Color.NO_COLOR}\n")
+    sys.stderr.write(f"{Color.RED if required else Color.BLUE}"
+                     f"({'req' if required else 'opt'}) {Color.NO_COLOR}"
+                     f"{'(quite) ' if quite else ''}"
+                     f"[{Color.BLUE}{job_name}{Color.NO_COLOR}]\n")
 
     for cmd in to_run:
         if not cmd:
             raise PreCommitJobError(f"empty command on {job_name}.")
         p = subprocess.Popen(
-            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            cmd, shell=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         out, err = p.communicate()
 
         if not quite or p.returncode != 0:
-            sys.stdout.write(out.decode())
-            sys.stderr.write(err.decode())
+            if out:
+                for line in out.splitlines():
+                    sys.stdout.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line.decode()}\n")
+                sys.stderr.write("\n")
+            if err:
+                for line in err.splitlines():
+                    sys.stderr.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line.decode()}\n")
+                sys.stderr.write("\n")
             if required and p.returncode != 0:
                 raise PreCommitJobError(f"{job_name} failed.")
 
@@ -87,7 +101,7 @@ class PreCommitJobsExecutor:
         self.jobs = data.get("jobs", {})
 
     def run_jobs(self) -> None:
-        sys.stderr.write(f"{Color.PURPLE}{'nugit |':-<70}{Color.NO_COLOR}\n")
+        sys.stdout.write(Constant.OUTPUT_HEADER)
         timeout = self.settings.get("timeout", 0)
         if not isinstance(timeout, (int, float)):
             raise PreCommitError("wrong settings.timeout type.")
@@ -95,7 +109,7 @@ class PreCommitJobsExecutor:
         for job_name, job_attrs in self.jobs.items():
             run_job(job_name, job_attrs)
             sleep(timeout)
-        sys.stderr.write(f"{Color.PURPLE}{'| done':->70}{Color.NO_COLOR}\n")
+        sys.stdout.write(Constant.OUTPUT_FOOTER)
 
     def __enter__(self):
         self.parse_config()
