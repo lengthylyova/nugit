@@ -8,7 +8,7 @@ class NugitAbout:
     DESCRIPTION: str = ("A pre-commit solution tool that "
                         "works according to the script described"
                         " in the `nugit.yaml` configuration file.")
-    VERSION: str = "1.0.7"
+    VERSION: str = "1.0.8"
     AUTHOR: str = "Lev Zlobin (lengthylyova)"
     AUTHOR_EMAIL: str = "lengthylyova@gmail.com"
 

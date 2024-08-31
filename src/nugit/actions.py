@@ -23,8 +23,5 @@ def run():
 
 
 def remove():
-    if os.path.exists(NugitPaths.CFG_DEST):
-        os.remove(NugitPaths.CFG_DEST)
-
     if os.path.exists(NugitPaths.PRECOMMIT_DEST):
         os.remove(NugitPaths.PRECOMMIT_DEST)
