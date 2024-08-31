@@ -5,19 +5,52 @@
 ![GitHub License](https://img.shields.io/github/license/lengthylyova/nugit)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/nugit)
 
-
+---
 
 ## About `nugit`
-Easy to setup, simple to use and tasty as nugget pre-commit solution.
+A pre-commit solution tool that works according to the script described in the `nugit.yaml` configuration file.
 
 <img src="assets/images/k9x8fAf.png">
+
+---
 
 ## Installation
 ```console
 pip install nugit
 ```
 
+---
+
 ## Usage
+### `nugit.yaml` example
+```yaml
+settings: # settings are not required
+  timeout: 0.5 # timeout between jobs (seconds)
+
+jobs: # jobs are required
+  is-vpn-enabled: # job_name
+    required: True # is successful completion required?
+    run: # commands list
+      - echo "Starting VPN check..." # simple command example
+      - | # bash script example
+        python -u << END
+        import sys
+        import requests
+        
+        response = requests.get("https://api.ipify.org?format=json").json()
+        if response.get("ip", None) != "${MY_VPN_IP}":
+          exit("Incorrect IP for VPN")
+        sys.stdout.write("Everything fine!\n")
+        END
+      - echo "VPN check finished!"
+
+  flake8-lint: # another job name
+    quite: True # if quite and no errors - nugit ignores output.
+    run: # more common usage example
+      - flake8 --version
+      - flake8 --extend-exclude=.env,*.egg-info --statistics --color=always --ignore F401 --max-line-length=100
+```
+
 ### Mount
 ```console
 nugit mount
@@ -37,16 +70,3 @@ nugit remove
 ```
 * removes a `nugit.yaml` configuration file
 * removes the `pre-commit` file in your `.git/hooks/`
-
-### `nugit.yaml` example
-```yaml
-settings:
-  timeout: 0.5 # timeout between jobs (seconds)
-
-jobs:
-  greeting: # job_name
-    quite: False # nugit ignores job output if True (default=False)
-    required: True # is successful completion required?
-    run: # commands list
-      - echo "Hi from Nugit!" # actual command
-```

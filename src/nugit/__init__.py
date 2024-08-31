@@ -1,3 +1,3 @@
-from .constants import NugitAbout
+from .constants import About
 
-__version__ = NugitAbout.VERSION
+__version__ = About.VERSION
