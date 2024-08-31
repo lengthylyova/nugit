@@ -5,7 +5,9 @@ from dataclasses import dataclass
 @dataclass(init=False, frozen=True)
 class NugitAbout:
     NAME: str = "nugit"
-    DESCRIPTION: str = "Easy to understand, configure and install git pre-commit solution"
+    DESCRIPTION: str = ("A pre-commit solution tool that "
+                        "works according to the script described"
+                        " in the `nugit.yaml` configuration file.")
     VERSION: str = "1.0.7"
     AUTHOR: str = "Lev Zlobin (lengthylyova)"
     AUTHOR_EMAIL: str = "lengthylyova@gmail.com"
