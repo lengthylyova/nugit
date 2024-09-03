@@ -1,0 +1,4 @@
+*.md linguist-detectable=true
+*.py linguist-detectable=true
+*.yaml linguist-detectable=true
+*.toml linguist-detectable=true
