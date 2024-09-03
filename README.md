@@ -9,7 +9,7 @@
 
 ## About `nugit`
 
-A pre-Hooks tool that works according to the script described in the yaml configuration file.
+A git-hooks tool that works according to the script described in the yaml configuration file.
 
 <img src="assets/images/k9x8fAf.png">
 
