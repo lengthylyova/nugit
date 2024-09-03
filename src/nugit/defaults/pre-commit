@@ -1,7 +1,0 @@
-#!/usr/bin/env python3
-from nugit.constants import Paths
-from nugit.jobs import PreCommitJobsExecutor
-
-if __name__ == "__main__":
-    with PreCommitJobsExecutor(Paths.CFG_DEST) as pc:
-        pc.run_jobs()

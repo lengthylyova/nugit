@@ -8,65 +8,148 @@
 ---
 
 ## About `nugit`
-A pre-commit solution tool that works according to the script described in the `nugit.yaml` configuration file.
+
+A pre-Hooks tool that works according to the script described in the yaml configuration file.
 
 <img src="assets/images/k9x8fAf.png">
 
 ---
 
-## Installation
+## Quick Guide
+
+### Installation
+
 ```console
 pip install nugit
 ```
 
 ---
 
-## Usage
-### `nugit.yaml` example
+### Integration
+
+To integrate nugit into your project, you need to mount it.
+To do this, **use the `mount`** command.
+Declare the **git hooks you intend to use** using the `-s` flag.
+
+```console
+nugit mount -s pre-commit -s pre-push
+```
+
+This command will create git hooks in your local repository and
+a `nugit.yaml` (if not exist) with [basic configuration](#basic-configuration) for the **selected** git hooks.
+You can also specify your own path to the configuration file using the `-f` flag.
+
+```console
+nugit mount -s pre-commit -s pre-push -f "my-nugit-cfg.yaml"
+```
+
+**_Warning_**:
+_This will **_create or replace an existing declared git hook_** in your
+project's `.git/hooks/` directory._
+
+---
+
+### Test runs
+
+You can run any git hook without calling git itself.
+To do this, use the `run` command with selected to run script using the `-s` flag.
+
+```console
+nugit run -s pre-commit
+```
+
+---
+
+### Remove hooks
+
+If you no longer need a git hook, you can remove it without changing the configuration.
+To do this, use the `remove` command. As with the other cases, select the scripts to remove using the `-s` flag.
+
+```console
+nugit remove -s pre-commit -s pre-push
+```
+
+---
+
+### Configuration file
+#### Basic configuration
 ```yaml
-settings: # settings are not required
+settings:
   timeout: 0.5 # timeout between jobs (seconds)
 
-jobs: # jobs are required
-  is-vpn-enabled: # job_name
+jobs:
+  greeting: # job_name
+    with: {{scripts}} # scripts list to use this job
+    quite: False # nugit ignores job output if True (default=False) and no error occurred
     required: True # is successful completion required?
     run: # commands list
-      - echo "Starting VPN check..." # simple command example
-      - | # bash script example
-        python -u << END
-        import sys
+      - echo "Hi from Nugit!" # actual command
+```
+
+#### A more realistic use case
+```yaml
+settings:
+  timeout: 0.5
+
+jobs:
+  vpn-check:
+    with: ["pre-push"]
+    required: True
+    run:
+      - |
+        python << END
         import requests
         
+        print("Requesting for my ip...")
         response = requests.get("https://api.ipify.org?format=json").json()
         if response.get("ip", None) != "${MY_VPN_IP}":
-          exit("Incorrect IP for VPN")
-        sys.stdout.write("Everything fine!\n")
+          sys.exit("VPN not enabled!")
+        print("Everything ok!")
         END
-      - echo "VPN check finished!"
-
-  flake8-lint: # another job name
-    quite: True # if quite and no errors - nugit ignores output.
-    run: # more common usage example
+        
+  flake8-lint:
+    with: ["pre-commit"]
+    quite: True
+    run:
       - flake8 --version
-      - flake8 --extend-exclude=.env,*.egg-info --statistics --color=always --ignore F401 --max-line-length=100
+      - flake8 src/* --statistics --ignore F401 --max-line-length=100
+  
+  py-unittests:
+    with: ["pre-commit", "pre-push"]
+    quite: True
+    required: True
+    run:
+      - python -m unittest
 ```
 
-### Mount
-```console
-nugit mount
-```
-* creates an example `nugit.yaml` configuration file if not exists
-* replaces the `pre-commit` file in your `.git/hooks/`
+---
 
-### Run (check)
-```console
-nugit run
-```
-* runs `.git/hooks/pre-commit` script if exists
+### Possible values for `-s` flag:
 
-### Remove
-```console
-nugit remove
-```
-* removes a `nugit.yaml` configuration file
-* removes the `pre-commit` file in your `.git/hooks/`
+* `pre-commit`
+* `pre-push`
+* `pre-pull`
+* `pre-rebase`
+* `pre-recieve`
+* `pre-merge-commit`
+* `pre-apply-patch`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

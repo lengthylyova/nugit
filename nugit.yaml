@@ -3,6 +3,7 @@ settings:
 
 jobs:
   flake8-lint-src:
+    with: ["pre-commit"]
     required: True
     quite: True
     run:

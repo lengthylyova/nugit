@@ -3,7 +3,8 @@ settings:
 
 jobs:
   greeting: # job_name
-    quite: False # nugit ignores job output if True (default=False)
+    with: {{scripts}} # scripts list to use this job
+    quite: False # nugit ignores job output if True (default=False) and no error occurred
     required: True # is successful completion required?
     run: # commands list
       - echo "Hi from Nugit!" # actual command

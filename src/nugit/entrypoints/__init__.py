@@ -6,10 +6,8 @@ def nugit():
     args = parser.parse_args()
     match args.action:
         case "mount":
-            mount()
-        case "validate":
-            raise NotImplementedError
+            mount(args)
         case "run":
-            run()
+            run(args)
         case "remove":
-            remove()
+            remove(args)
