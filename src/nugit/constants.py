@@ -36,5 +36,5 @@ class Color:
 @dataclass(init=False, frozen=True)
 class InOut:
     OUTPUT_HEADER: str = (f"\n{Color.PURPLE}{f'- nuGit v{About.VERSION} -'.center(28)}\n"
-                          f"- Git-Hooks Tool -\n\n")
+                          f"{'- Git - Hooks Tool -'.center(28)}\n\n")
     OUTPUT_FOOTER: str = f"\n{Color.GREEN}{'- nuGit jobs done -'.center(28)}{Color.NO_COLOR}\n\n"
