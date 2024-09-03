@@ -6,7 +6,7 @@ from typing import Dict, Any
 import yaml
 
 from .constants import Color, InOut
-from .exeptions import PreCommitJobError, PreCommitError
+from .exeptions import NugitJobError, NugitError
 
 
 def parse_yaml(filepath: str) -> Dict[str, Any]:
@@ -30,7 +30,7 @@ def execute_cmd(cmd: str, quite: bool):
             for line in iter(p.stdout.readline, ""):
                 yield line
             p.stdout.close()
-        raise PreCommitJobError(f"Failed: {cmd}")
+        raise NugitJobError(f"Failed: {cmd}")
 
 
 def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
@@ -38,9 +38,9 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
     required = job_attrs.get("required", False)
     to_run = job_attrs.get("run", [])
     if not isinstance(required, bool):
-        raise PreCommitError(f"`required` for {job_name} is not bool.")
+        raise NugitError(f"`required` for {job_name} is not bool.")
     if not to_run:
-        raise PreCommitError(f"`run` for {job_name} not defined.")
+        raise NugitError(f"`run` for {job_name} not defined.")
 
     sys.stderr.write(f"{Color.RED if required else Color.BLUE}"
                      f"({'req' if required else 'opt'}) {Color.NO_COLOR}"
@@ -49,25 +49,26 @@ def run_job(job_name: str, job_attrs: Dict[str, Any]) -> None:
 
     for cmd in to_run:
         if not cmd:
-            raise PreCommitJobError(f"empty command on {job_name}.")
+            raise NugitJobError(f"empty command on {job_name}.")
         try:
             for line in execute_cmd(cmd, quite):
                 sys.stdout.write(f"\t{Color.CYAN}>>> {Color.NO_COLOR}{line}")
-        except PreCommitError as e:
+        except NugitError as e:
             if not required:
                 sys.stdout.write(f"{Color.RED}{e.__repr__()}{Color.NO_COLOR}")
             else:
                 raise e
 
 
-class PreCommitJobsExecutor:
-    def __init__(self, config_filepath: str) -> None:
-        self.jobs = None
-        self.settings = None
-        self.filepath = config_filepath
+class JobsExecutor:
+    def __init__(self, config_filepath: str, script_name: str) -> None:
+        self.config_filepath = config_filepath
+        self.script_name = script_name
+        self.jobs = {}
+        self.settings = {}
 
     def parse_config(self):
-        data = parse_yaml(self.filepath)
+        data = parse_yaml(self.config_filepath)
         self.settings = data.get("settings", {})
         self.jobs = data.get("jobs", {})
 
@@ -75,9 +76,11 @@ class PreCommitJobsExecutor:
         sys.stdout.write(InOut.OUTPUT_HEADER)
         timeout = self.settings.get("timeout", 0)
         if not isinstance(timeout, (int, float)):
-            raise PreCommitError("wrong settings.timeout type.")
+            raise NugitError("wrong settings.timeout type.")
 
         for job_name, job_attrs in self.jobs.items():
+            if self.script_name not in job_attrs.get("with", []):
+                continue
             run_job(job_name, job_attrs)
             sleep(timeout)
         sys.stdout.write(InOut.OUTPUT_FOOTER)
@@ -87,5 +90,5 @@ class PreCommitJobsExecutor:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type in (PreCommitJobError, PreCommitError):
+        if exc_type in (NugitJobError, NugitError):
             sys.exit(f"{Color.RED}{exc_type.__name__}: {exc_value}{Color.NO_COLOR}\n")

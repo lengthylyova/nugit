@@ -1,6 +1,6 @@
-class PreCommitJobError(Exception):
+class NugitJobError(Exception):
     pass
 
 
-class PreCommitError(Exception):
+class NugitError(Exception):
     pass

@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nugit"
-description = "Easy to setup, simple to use and tasty as nugget pre-commit solution."
+description = "A git-hooks tool that works according to the script described in the yaml configuration file."
 authors = [{ name = "Lev Zlobin", email = "lengthylyova@gmail.com" }]
-dependencies = ["PyYAML >= 6.0.2"]
+dependencies = ["PyYAML >= 6.0.2", "Jinja2 >= 3.1.4"]
 license = {file = "LICENSE"}
 readme = "src/nugit/DESC.md"
-keywords = ["python", "git", "pre-commit"]
+keywords = ["python", "git", "hook", "git-hooks"]
 classifiers = [
   "Programming Language :: Python"
 ]

@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+from nugit.jobs import JobsExecutor
+
+if __name__ == "__main__":
+    with JobsExecutor("{{config_filepath}}", "{{script_name}}") as pc:
+        pc.run_jobs()

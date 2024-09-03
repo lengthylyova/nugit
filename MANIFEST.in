@@ -1,1 +1,1 @@
-include include src/nugit/defaults/*
+include include src/nugit/templates/*
