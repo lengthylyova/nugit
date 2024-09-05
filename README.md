@@ -1,13 +1,16 @@
 <img src="assets/images/lesa7xg.png">
 
-[![Flake8](https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml/badge.svg)](https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml)
-![PyPI - Version](https://img.shields.io/pypi/v/nugit)
-![GitHub License](https://img.shields.io/github/license/lengthylyova/nugit)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/nugit)
+
+<p align="center">
+  <a href="https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml"><img src="https://github.com/lengthylyova/nugit/actions/workflows/flake8-lint.yaml/badge.svg"/></a>
+  <a href="https://img.shields.io/pypi/v/nugit"><img src="https://img.shields.io/pypi/v/nugit"/></a>
+  <a href="https://img.shields.io/github/license/lengthylyova/nugit"><img src="https://img.shields.io/github/license/lengthylyova/nugit"/></a>
+  <a href="https://img.shields.io/pypi/dm/nugit"><img src="https://img.shields.io/pypi/dm/nugit"/></a>
+</p>
 
 ---
 
-## About `nugit`
+## About `nugit` 📃
 
 A git-hooks tool that works according to the script described in the yaml configuration file.
 
@@ -15,9 +18,9 @@ A git-hooks tool that works according to the script described in the yaml config
 
 ---
 
-## Quick Guide
+## Quick Guide 📖
 
-### Installation
+### Installation 🔧
 
 ```console
 pip install nugit
@@ -25,7 +28,7 @@ pip install nugit
 
 ---
 
-### Integration
+### Integration 🔗 
 
 To integrate nugit into your project, you need to mount it.
 To do this, **use the `mount`** command.
@@ -49,7 +52,7 @@ project's `.git/hooks/` directory._
 
 ---
 
-### Test runs
+### Test runs 🚀
 
 You can run any git hook without calling git itself.
 To do this, use the `run` command with selected to run script using the `-s` flag.
@@ -60,7 +63,7 @@ nugit run -s pre-commit
 
 ---
 
-### Remove hooks
+### Remove hooks ⛔
 
 If you no longer need a git hook, you can remove it without changing the configuration.
 To do this, use the `remove` command. As with the other cases, select the scripts to remove using the `-s` flag.
@@ -71,8 +74,8 @@ nugit remove -s pre-commit -s pre-push
 
 ---
 
-### Configuration file
-#### Basic configuration
+### Configuration file 📝
+#### Basic configuration 👌
 ```yaml
 settings:
   timeout: 0.5 # timeout between jobs (seconds)
@@ -86,7 +89,7 @@ jobs:
       - echo "Hi from Nugit!" # actual command
 ```
 
-#### A more realistic use case
+#### A more realistic use case 🤔
 ```yaml
 settings:
   timeout: 0.5
@@ -124,7 +127,7 @@ jobs:
 
 ---
 
-### Possible values for `-s` flag:
+### Possible values for `-s` flag 🏳️
 
 * `pre-commit`
 * `pre-push`
